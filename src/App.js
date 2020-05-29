@@ -1,26 +1,37 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React,{Component, Fragment}  from 'react';
+import Navbar from "./components/layout/Navbar"
+import Users from "./components/users/Users";
+// import function to get users
+import fetchUsers, { fetchUser } from "./functions/fetchUser";
+import "./App.css"
+// this is how to import a component
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+class App extends Component{
+  state = {
+    users:[],
+    loading:false,
+  }
+  // you can use defined property and methods
+  async componentDidMount(){
+
+    this.setState({loading:true});
+    const data = await fetchUser(`https://api.github.com/users?`);
+    this.setState({
+      loading:false,
+      users:data,
+    });
+  }
+  render(){
+    // condition statement
+    return (
+      <Fragment>
+        {/* this is how to use the component in JSX */}
+        <Navbar/>
+        <Users  loading={this.state.loading} users={this.state.users}/>
+      </Fragment>
+    );
+  }
+  // render() is required
 }
 
 export default App;
