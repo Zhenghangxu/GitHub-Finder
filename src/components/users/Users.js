@@ -1,35 +1,29 @@
-import React from 'react'
+import React, { useContext } from "react";
 import UserItem from "./UserItem";
-import PropTypes from "prop-types";
-import {Spinner} from "../layout/spinner"
+// import PropTypes from "prop-types";
+import { Spinner } from "../layout/spinner";
+import NotFound from "../layout/NotFound";
+import GithubContext from "../../context/github/githubContext";
 
-const Users=(props)=>{
-    if (props.loading) {
-      return <Spinner></Spinner>
-    } else {
-      return(
-        <div style={userStyle}>
-        {props.users.map(user=>(
+const Users = () => {
+  const githubContext = useContext(GithubContext);
+  const { loading, users } = githubContext;
+
+  if (loading) {
+    return <Spinner></Spinner>;
+  } else if (users.length === 0) {
+    return <NotFound msg="No User Found"></NotFound>;
+  } else {
+    return (
+      <div className="user-grid">
+        {users.map((user) => (
           <UserItem key={user.id} user={user}></UserItem>
         ))}
-        </div>
-      )
-    }
-}
-// propType
-Users.propTypes = {
-  users:PropTypes.array.isRequired,
-  loading:PropTypes.bool.isRequired,
-}
+      </div>
+    );
+  }
+};
 
 // style
-const userStyle = {
-  display: "grid",
-  gridTemplateColumns:'repeat(auto-fit, minmax(250px, 1fr))',
-  columnGap:"1rem",
-  padding:"0 1rem"
-}
 
-
-
-export default Users
+export default Users;

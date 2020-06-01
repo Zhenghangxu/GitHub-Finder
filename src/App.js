@@ -1,37 +1,49 @@
-import React,{Component, Fragment}  from 'react';
-import Navbar from "./components/layout/Navbar"
+import React, { Fragment } from "react";
+import Navbar from "./components/layout/Navbar";
+import Search from "./components/layout/Search";
 import Users from "./components/users/Users";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 // import function to get users
-import fetchUsers, { fetchUser } from "./functions/fetchUser";
-import "./App.css"
+// import Footer from "./components/layout/Footer";
+import { About } from "./components/pages/About";
+import User from "./components/pages/User";
+import GithubState from "./context/github/GithubState";
+
+import "./App.scss";
+import NotFound from "./components/layout/NotFound";
 // this is how to import a component
 
-class App extends Component{
-  state = {
-    users:[],
-    loading:false,
-  }
+const App = () => {
   // you can use defined property and methods
-  async componentDidMount(){
 
-    this.setState({loading:true});
-    const data = await fetchUser(`https://api.github.com/users?`);
-    this.setState({
-      loading:false,
-      users:data,
-    });
-  }
-  render(){
-    // condition statement
-    return (
-      <Fragment>
-        {/* this is how to use the component in JSX */}
-        <Navbar/>
-        <Users  loading={this.state.loading} users={this.state.users}/>
-      </Fragment>
-    );
-  }
-  // render() is required
-}
+  return (
+    <GithubState>
+      <Router>
+        <div className="container">
+          <Navbar />
+          <Switch>
+            <Route
+              exact
+              path="/"
+              render={() => (
+                <Fragment>
+                  <Search></Search>
+                  <Users></Users>
+                </Fragment>
+              )}
+            ></Route>
+            <Route exact path="/about" component={About}></Route>
+            <Route
+              exact
+              path="/user/:login"
+              render={(props) => <User match={props.match}></User>}
+            ></Route>
+            <Route component={NotFound} />
+          </Switch>
+        </div>
+      </Router>
+    </GithubState>
+  );
+};
 
 export default App;
