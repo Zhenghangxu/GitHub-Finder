@@ -4,9 +4,10 @@ const fetchUser = async (type, string = null) => {
   if (process.env.NODE_ENV !== "production") {
     githubAccessTolken = process.env.REACT_APP_GITHUB_CLIENT_ACCESS_TOLKEN;
   } else {
-    githubAccessTolken = process.env.REACT_APP_GITHUB_CLIENT_ACCESS_TOLKEN;
+    githubAccessTolken =
+      process.env.REACT_APP_GITHUB_CLIENT_ACCESS_TOLKEN_DEPLOY;
   }
-  // TODO Need to Fixed deployment issue
+  // TODO Need to Fixed API Key deployment issue
   let request;
   const options = {
     method: "GET",
