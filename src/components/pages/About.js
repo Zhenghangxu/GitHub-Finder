@@ -7,7 +7,7 @@ export const About = () => {
       <h2>App Information</h2>
       <p>
         This is an application for searching GitHub user, made with React and
-        GitHub API
+        GitHub api
       </p>
       <hr />
       <h2>Author</h2>
